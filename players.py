@@ -1,6 +1,5 @@
-import random
-import math
-import game as game
+import random, os
+import game
 
 class Player():
     def __init__(self, letter):
@@ -21,16 +20,18 @@ class HumanPlayer(Player):
         self.humanMove = None
         while not valid_move:        
             try:
-                self.humanMove = int(input("Bir hamle yapınız [0-8]: "))
+                self.humanMove = int(input(f"{self.letter}'s turn. Make a move [0-8]: "))
                 
                 if not self.humanMove in t.check_available():
                     raise ValueError
                 valid_move=True
             except ValueError:
                 print("Invalid square. Try again")
+                os.system("clear")
                 continue
         return self.humanMove
-
+    def __str__(self):
+        return f"{self.letter} object."
 
 
 #Random computer player spesific
