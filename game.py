@@ -5,6 +5,7 @@ import time
 class TicTacToe():
     def __init__(self):    
         self.current_winner=None
+        self.tie = None
         self.board = self.make_board()
 
     #Create table
@@ -16,8 +17,9 @@ class TicTacToe():
         if self.board[square] == " ":
             self.board[square] = letter
             if not self.check_available():
-                self.current_winner = True
-                return self.current_winner
+                self.tie = True
+                return self.tie
+                
 
     #Will return the letter/new letter
     @staticmethod
@@ -32,7 +34,13 @@ class TicTacToe():
         
     #Check the table staus, if there is a winner, return current_winner = 1
     def check_status(self):
-        pass
+        situ = [self.board[2:7:2],self.board[-9::4],self.board[::3],self.board[1::3],self.board[2::3],self.board[0:3],self.board[3:6],self.board[6:9]]
+        for i in range(len(situ)):
+            if situ[i].count("X") == 3 or situ[i].count("O") == 3:
+                self.current_winner = True
+                return self.current_winner
+            
+            
 
     #Print the table
     def print_board(self):
@@ -53,26 +61,30 @@ class TicTacToe():
         return list(self.check_available())
 
 
+#Start the game, the initialization screen.
 def playthegame(game, print_game):
-
-    #Start the game, the initialization screen.
     if print_game:
         game.print_board_nums()
         print("Game initialization... Remember, X plays first.")
 
     current_letter = game.change_letter("ilk")
-    while not game.current_winner:
-        if True:    
-            game.make_move(current_letter.get_move(t), current_letter.letter)
-            time.sleep(0.3)
-            os.system("clear")
-            current_letter = game.change_letter(current_letter)
-            game.print_board()
-            
-            
+    while True:
+        game.make_move(current_letter.get_move(t), current_letter.letter)
+        time.sleep(0.3)
+        os.system("clear")
+        if game.check_status() or game.tie == True:
+            if game.current_winner == True:
+                game.print_board()
+                print(f"There is a winner! {current_letter}wins!")
+                break
+            else:
+                game.print_board()
+                print("It's a tie!")
+                break
+        current_letter = game.change_letter(current_letter)
+        game.print_board()
 
-
-
+    
 
 if __name__ == '__main__':
     #x_player = players.RandomComputerPlayer('X')
