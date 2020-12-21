@@ -24,9 +24,11 @@ class HumanPlayer(Player):
                 if not self.humanMove in t.check_available():
                     raise ValueError
                 valid_move=True
+            
             except ValueError:
                 print(f"Invalid square. Try again. (Available moves: {t.available_moves()}")
                 continue
+        
         return self.humanMove
 
     #Print object's name.    
@@ -36,8 +38,17 @@ class HumanPlayer(Player):
 
 #Random computer player spesific
 class RandomCompPlayer(Player):
-    def __init__(self):
-        #super().__init__(letter)
-        pass
-    def get_move(self):
-        pass
+    def __init__(self,letter):
+        super().__init__(letter)
+
+    def get_move(self, t):
+        
+        try:
+            self.compMove = random.choice((t.available_moves()))
+            return self.compMove
+        except:
+            t.tie = True
+            return t.tie      
+    
+    def __str__(self):
+        return f"{self.letter} player."
